@@ -10,9 +10,18 @@ use Throwable;
 
 class Handler extends ExceptionHandler {
 
+    /**
+     * 
+     * @var type
+     */
     protected $dontReport = [
             //
     ];
+
+    /**
+     * 
+     * @var type
+     */
     protected $dontFlash = [
         'current_password',
         'password',
