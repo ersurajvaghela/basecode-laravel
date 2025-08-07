@@ -6,7 +6,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('basecode');
 });
 
 Route::get('/health', [\App\Http\Controllers\HealthController::class, 'check']);
