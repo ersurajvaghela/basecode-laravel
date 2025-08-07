@@ -82,6 +82,33 @@ class UserController extends BaseController {
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/users/{id}",
+     *     summary="Get user by ID",
+     *     tags={"Users"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
     public function show(int $id): JsonResponse {
         try {
             $user = $this->userService->getUserById($id);
@@ -99,6 +126,38 @@ class UserController extends BaseController {
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/users",
+     *     summary="Create a new user",
+     *     tags={"Users"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="password_confirmation", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Failed to create user"
+     *     )
+     * )
+     */
     public function store(StoreUserRequest $request): JsonResponse {
         try {
             $user = $this->userService->createUser($request->validated());
@@ -113,6 +172,45 @@ class UserController extends BaseController {
         }
     }
 
+
+    /**
+     * @OA\Put(
+     *     path="/api/v1/users/{id}",
+     *     summary="Update user by ID",
+     *     tags={"Users"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"name", "email"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             @OA\Property(property="password", type="string", nullable=true),
+     *             @OA\Property(property="password_confirmation", type="string", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     ),
+     * )
+     */
     public function update(UpdateUserRequest $request, int $id): JsonResponse {
         try {
             $user = $this->userRepository->find($id);
@@ -132,6 +230,32 @@ class UserController extends BaseController {
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/users/{id}",
+     *     summary="Delete user by ID",
+     *     tags={"Users"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
     public function destroy(int $id): JsonResponse {
         try {
             $user = $this->userRepository->find($id);
